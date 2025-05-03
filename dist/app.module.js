@@ -27,7 +27,6 @@ exports.AppModule = AppModule = __decorate([
                 database: 'db.sqlite',
                 synchronize: true,
             }),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, story_entity_1.Story]),
             user_module_1.UserModule,
             story_module_1.StoryModule,
         ],

@@ -1,0 +1,64 @@
+import { JsonWebTokenError } from './../../node_modules/@types/jsonwebtoken/index.d';
+import { JwtService } from '@nestjs/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import { UserDto } from './dto/user.dto';
+
+@Injectable()
+export class UserService {
+  constructor(
+    private jwt: JwtService,
+    @InjectRepository(User) private repository: Repository<User>,
+  ) {}
+
+  async generateTokens(payload: {
+    email: string;
+    id: number;
+    role: 'user' | 'admin';
+  }) {
+    const accessToken = await this.jwt.sign(payload, {
+      secret: 'ditesi opekkha koren',
+      expiresIn: '15m',
+    });
+
+    const refreshToken = await this.jwt.sign(payload, {
+      secret: 'koisina na opkkha korte?',
+      expiresIn: '15d',
+    });
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+  async signUp(payload: UserDto) {
+    const { email, password } = payload;
+    // find if there is any existing user or not,
+    const existedUser = await this.repository.findOneBy({ email });
+    if (existedUser) {
+      throw new UnauthorizedException(
+        'We already have an user with this email!',
+      );
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const role = 'user';
+    const createdUser = this.repository.create({
+      email,
+      hashedPassword,
+      role,
+    });
+    const savedUser = await this.repository.save(createdUser);
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      id: createdUser.id,
+      email: createdUser.email,
+      role: createdUser.role,
+    });
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+}

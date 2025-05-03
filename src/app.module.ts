@@ -15,7 +15,7 @@ import { Story } from './story/story.entity';
       database: 'db.sqlite',
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User, Story]),
+    
     UserModule,
     StoryModule,
   ],
