@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontFamily": "Operator Mono Lig",
-  "editor.fontSize": 18,
+  "editor.fontSize": 16,
   "github.copilot.enable": {
     "*": false,
     "plaintext": false,
