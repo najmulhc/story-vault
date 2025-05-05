@@ -1,6 +1,10 @@
 import { JsonWebTokenError } from './../../node_modules/@types/jsonwebtoken/index.d';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -55,6 +59,30 @@ export class UserService {
       id: createdUser.id,
       email: createdUser.email,
       role: createdUser.role,
+    });
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async login(payload: UserDto) {
+    const { email, password } = payload;
+
+    const user = await this.repository.findOneBy({ email });
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    const correctPassword = await bcrypt.compare(password, user.hashedPassword);
+    if (!correctPassword) {
+      throw new UnauthorizedException('Incorrect password!');
+    }
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      email: user.email,
+      role: user.role,
+      id: user.id,
     });
     return {
       accessToken,
