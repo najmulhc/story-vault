@@ -1,12 +1,9 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.fontFamily": "Operator Mono Lig",
+  "editor.fontFamily": "Geist Mono",
   "editor.fontSize": 16,
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false,
-    "cpp": false
-  }
+  "editor.fontLigatures": true,
+  "editor.fontWeight": 300,
+  "editor.fontVariations": true,
+  
 }

@@ -41,6 +41,8 @@ export class UserController {
       accessToken,
     };
   }
+
+  // we want a new set of tokens
   @Get('/refresh-tokens')
   async refreshTokens(
     @Req() req: Request,
@@ -59,6 +61,20 @@ export class UserController {
     });
     return {
       accessToken,
+    };
+  }
+
+  // we want to log out of the site
+  @Post('/log-out')
+  logOut(
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
+  ) {
+    res.clearCookie('refresh-token');
+    return {
+      success: true,
     };
   }
 }

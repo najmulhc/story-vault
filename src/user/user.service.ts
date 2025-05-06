@@ -53,7 +53,8 @@ export class UserService {
       hashedPassword,
       role,
     });
-    const savedUser = await this.repository.save(createdUser);
+
+    await this.repository.save(createdUser);
 
     const { accessToken, refreshToken } = await this.generateTokens({
       id: createdUser.id,
@@ -92,28 +93,24 @@ export class UserService {
 
   async refreshTokens(refresher: string) {
     if (!refresher) {
-      throw new UnauthorizedException("NO refresh token given");
+      throw new UnauthorizedException('No refresh token given');
     }
 
-try {
+    try {
       const decoded = await this.jwt.verifyAsync(refresher, {
         secret: 'koisina na opkkha korte?',
       });
-   const { accessToken, refreshToken } = await this.generateTokens({
-     email: decoded.email,
-     id: decoded.id,
-     role: decoded.id,
-   });
-   return {
-     accessToken,
-     refreshToken,
-   };
-} catch (error) {
-  throw new UnauthorizedException(error)
-}
-
-  
-
-   
+      const { accessToken, refreshToken } = await this.generateTokens({
+        email: decoded.email,
+        id: decoded.id,
+        role: decoded.id,
+      });
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (error) {
+      throw new UnauthorizedException(error);
+    }
   }
 }
