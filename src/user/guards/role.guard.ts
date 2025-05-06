@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common'; 
+} from '@nestjs/common';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -12,11 +12,9 @@ export class RoleGuard implements CanActivate {
     this.role = userRole;
   }
   canActivate(context: ExecutionContext): any {
-    // if the role is asking admin, we will not let pass the user to go
-    // if the role is asking user, anyone can go
     const request = context.switchToHttp().getRequest();
-      const { user } = request;
-  console.log(user);
+    const { user } = request;
+
     if (user.role == this.role) {
       return true;
     }

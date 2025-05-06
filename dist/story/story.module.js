@@ -8,10 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoryModule = void 0;
 const common_1 = require("@nestjs/common");
+const story_controller_1 = require("./story.controller");
+const jwt_1 = require("@nestjs/jwt");
+const auth_guard_1 = require("../user/guards/auth.guard");
+const story_service_1 = require("./story.service");
 let StoryModule = class StoryModule {
 };
 exports.StoryModule = StoryModule;
 exports.StoryModule = StoryModule = __decorate([
-    (0, common_1.Module)({})
+    (0, common_1.Module)({
+        controllers: [story_controller_1.StoryController],
+        providers: [jwt_1.JwtService, auth_guard_1.AuthGuard, story_service_1.StoryService],
+        imports: [jwt_1.JwtModule.register({
+                secret: ''
+            })]
+    })
 ], StoryModule);
 //# sourceMappingURL=story.module.js.map

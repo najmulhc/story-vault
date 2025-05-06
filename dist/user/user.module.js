@@ -26,6 +26,7 @@ exports.UserModule = UserModule = __decorate([
         ],
         providers: [user_service_1.UserService],
         controllers: [user_controller_1.UserController],
+        exports: [],
     })
 ], UserModule);
 //# sourceMappingURL=user.module.js.map
