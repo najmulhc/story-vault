@@ -5,5 +5,11 @@
   "editor.fontLigatures": true,
   "editor.fontWeight": 300,
   "editor.fontVariations": true,
-  
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "cpp": false
+  }
 }

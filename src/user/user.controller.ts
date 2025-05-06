@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { Response, Request } from 'express';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -76,5 +85,11 @@ export class UserController {
     return {
       success: true,
     };
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/test')
+  returnSomething() {
+    return 'shob thik ase';
   }
 }
