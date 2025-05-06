@@ -103,7 +103,7 @@ export class UserService {
       const { accessToken, refreshToken } = await this.generateTokens({
         email: decoded.email,
         id: decoded.id,
-        role: decoded.id,
+        role: decoded.role,
       });
       return {
         accessToken,
