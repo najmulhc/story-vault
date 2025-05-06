@@ -89,4 +89,31 @@ export class UserService {
       refreshToken,
     };
   }
+
+  async refreshTokens(refresher: string) {
+    if (!refresher) {
+      throw new UnauthorizedException("NO refresh token given");
+    }
+
+try {
+      const decoded = await this.jwt.verifyAsync(refresher, {
+        secret: 'koisina na opkkha korte?',
+      });
+   const { accessToken, refreshToken } = await this.generateTokens({
+     email: decoded.email,
+     id: decoded.id,
+     role: decoded.id,
+   });
+   return {
+     accessToken,
+     refreshToken,
+   };
+} catch (error) {
+  throw new UnauthorizedException(error)
+}
+
+  
+
+   
+  }
 }

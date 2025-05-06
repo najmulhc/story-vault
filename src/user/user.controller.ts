@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -32,6 +32,26 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const { accessToken, refreshToken } = await this.userService.login(body);
+
+    res.cookie('refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+    return {
+      accessToken,
+    };
+  }
+  @Get('/refresh-tokens')
+  async refreshTokens(
+    @Req() req: Request,
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
+  ) {
+    const refresher = req.cookies['refresh-token'];
+    const { accessToken, refreshToken } =
+      await this.userService.refreshTokens(refresher);
 
     res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
