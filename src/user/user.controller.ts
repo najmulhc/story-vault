@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Req,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -12,6 +14,7 @@ import { UserDto } from './dto/user.dto';
 import { Response, Request } from 'express';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { AdminDto } from './dto/admin.dto';
 
 @Controller('user')
 export class UserController {
@@ -53,6 +56,7 @@ export class UserController {
   }
 
   // we want a new set of tokens
+  
   @Get('/refresh-tokens')
   async refreshTokens(
     @Req() req: Request,
@@ -62,9 +66,12 @@ export class UserController {
     res: Response,
   ) {
     const refresher = req.cookies['refresh-token'];
+
     const { accessToken, refreshToken } =
       await this.userService.refreshTokens(refresher);
-
+    console.log({
+   accessToken, refreshToken
+ })
     res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
       secure: true,
@@ -88,6 +95,32 @@ export class UserController {
     };
   }
 
+  @UseGuards(AuthGuard)
+  @Patch('/be-admin')
+  async beAdmin(
+    @Body() body: AdminDto,
+    @Req() req: Request,
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
+  ) {
+    const { key } = body;
+    if (key != 'a7f3d9b21c8e45f0') {
+      throw new UnauthorizedException('Invalid key given');
+    }
+    const oldRefreshToken = req.cookies['refresh-token'];
+
+    const { accessToken, refreshToken } = await this.userService.beAdmin(oldRefreshToken);
+
+     res.cookie('refresh-token', refreshToken, {
+       httpOnly: true,
+       secure: true,
+     });
+     return {
+       accessToken,
+     };
+  }
   @UseGuards(AuthGuard, new RoleGuard('admin'))
   @Get('/test')
   returnSomething() {

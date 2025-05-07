@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { ColumnTypeUndefinedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { UserDto } from './dto/user.dto';
 
@@ -100,15 +100,48 @@ export class UserService {
       const decoded = await this.jwt.verifyAsync(refresher, {
         secret: 'koisina na opkkha korte?',
       });
+      const user =   await this.repository.findOneBy({
+   email: decoded.email
+      })
+      console.log(user)
       const { accessToken, refreshToken } = await this.generateTokens({
-        email: decoded.email,
-        id: decoded.id,
-        role: decoded.role,
+        email: user.email,
+        id: user.id,
+        role: user.role,
       });
       return {
         accessToken,
         refreshToken,
       };
+    } catch (error) {
+      throw new UnauthorizedException(error);
+    }
+  }
+
+  async beAdmin(oldRefreshToken: string) {
+    if (!oldRefreshToken) {
+      throw new UnauthorizedException('No refresh token is given.');
+    }
+
+    try {
+      const decoded = await this.jwt.verifyAsync(oldRefreshToken, {
+        secret: 'koisina na opkkha korte?',
+      });
+
+      const user = await this.repository.findOneBy({
+        email: decoded.email,
+      });
+
+      if (!user) {
+        throw new NotFoundException('No user found with this email.');
+      }
+      user.role = 'admin';
+      const savedUser = await this.repository.save(user);
+      return await this.generateTokens({
+        role: savedUser.role,
+        email: savedUser.email,
+        id: savedUser.id,
+      });
     } catch (error) {
       throw new UnauthorizedException(error);
     }

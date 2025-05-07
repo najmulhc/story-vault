@@ -1,15 +1,84 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.fontFamily": "Geist Mono",
+  "workbench.colorTheme": "Tokyo Night Void",
+  "workbench.activityBar.location": "hidden",
+  "workbench.editor.showTabs": "single",
+  "workbench.statusBar.visible": false,
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": true,
+  "editor.minimap.enabled": false,
+  "breadcrumbs.enabled": false,
+  "workbench.sideBar.location": "right",
+  "workbench.iconTheme": "catppuccin-frappe",
+  "material-icon-theme.hidesExplorerArrows": true,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.tree.indent": 8,
+  "explorer.compactFolders": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "explorer.decorations.badges": false,
+  "git.decorations.enabled": false,
+  "window.zoomLevel": 3,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "line",
+
+  "editor.fontFamily": "Dank Mono",
   "editor.fontSize": 16,
   "editor.fontLigatures": true,
-  "editor.fontWeight": 300,
-  "editor.fontVariations": true,
+  "editor.lineHeight": 1.75,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": "italic"
+        }
+      }
+    ]
+  },
+  "editor.stickyScroll.enabled": false,
+  "editor.colorDecorators": true,
+  "editor.codeLens": true,
+  "editor.links": false,
+  "editor.matchBrackets": "never",
+  "editor.parameterHints.enabled": false,
+  "editor.lightbulb.enabled": "onCode",
+  "editor.hover.enabled": true,
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "scm.diffDecorations": "none",
+  "editor.lineNumbers": "relative",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.showFoldingControls": "never",
+  "editor.guides.indentation": false,
+  "editor.renderWhitespace": "none",
+  "editor.renderLineHighlight": "none",
+  "editor.occurrencesHighlight": "off",
+  "editor.selectionHighlight": false,
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.scrollbar.vertical": "hidden",
+  "editor.overviewRulerBorder": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.quickSuggestions": {
+    "other": "off"
+  },
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+  "emmet.triggerExpansionOnTab": true,
+  "files.autoSave": "afterDelay",
   "github.copilot.enable": {
     "*": false,
     "plaintext": false,
     "markdown": false,
-    "scminput": false,
-    "cpp": false
-  }
+    "scminput": false
+  },
+  "extensions.ignoreRecommendations": true,
+  "terminal.integrated.fontFamily": "Dank Mono",
+  "terminal.integrated.fontLigatures.enabled": true,
+  "terminal.integrated.lineHeight": 1.5,
+  "prettier.resolveGlobalModules": true
 }

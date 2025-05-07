@@ -1,6 +1,4 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common'; 
 import { UserModule } from './user/user.module';
 import { StoryModule } from './story/story.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,11 +13,11 @@ import { Story } from './story/story.entity';
       database: 'db.sqlite',
       synchronize: true,
     }),
-    
+
     UserModule,
     StoryModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

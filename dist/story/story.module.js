@@ -12,6 +12,8 @@ const story_controller_1 = require("./story.controller");
 const jwt_1 = require("@nestjs/jwt");
 const auth_guard_1 = require("../user/guards/auth.guard");
 const story_service_1 = require("./story.service");
+const typeorm_1 = require("@nestjs/typeorm");
+const story_entity_1 = require("./story.entity");
 let StoryModule = class StoryModule {
 };
 exports.StoryModule = StoryModule;
@@ -19,9 +21,11 @@ exports.StoryModule = StoryModule = __decorate([
     (0, common_1.Module)({
         controllers: [story_controller_1.StoryController],
         providers: [jwt_1.JwtService, auth_guard_1.AuthGuard, story_service_1.StoryService],
-        imports: [jwt_1.JwtModule.register({
-                secret: ''
-            })]
+        imports: [
+            jwt_1.JwtModule.register({
+                secret: '',
+            }), typeorm_1.TypeOrmModule.forFeature([story_entity_1.Story])
+        ],
     })
 ], StoryModule);
 //# sourceMappingURL=story.module.js.map
