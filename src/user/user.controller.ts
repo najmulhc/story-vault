@@ -15,6 +15,7 @@ import { Response, Request } from 'express';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { AdminDto } from './dto/admin.dto';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 
 @Controller('user')
 export class UserController {
@@ -56,7 +57,7 @@ export class UserController {
   }
 
   // we want a new set of tokens
-  
+
   @Get('/refresh-tokens')
   async refreshTokens(
     @Req() req: Request,
@@ -70,8 +71,9 @@ export class UserController {
     const { accessToken, refreshToken } =
       await this.userService.refreshTokens(refresher);
     console.log({
-   accessToken, refreshToken
- })
+      accessToken,
+      refreshToken,
+    });
     res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
       secure: true,
@@ -111,19 +113,41 @@ export class UserController {
     }
     const oldRefreshToken = req.cookies['refresh-token'];
 
-    const { accessToken, refreshToken } = await this.userService.beAdmin(oldRefreshToken);
+    const { accessToken, refreshToken } =
+      await this.userService.beAdmin(oldRefreshToken);
 
-     res.cookie('refresh-token', refreshToken, {
-       httpOnly: true,
-       secure: true,
-     });
-     return {
-       accessToken,
-     };
+    res.cookie('refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+    return {
+      accessToken,
+    };
   }
   @UseGuards(AuthGuard, new RoleGuard('admin'))
   @Get('/test')
   returnSomething() {
     return 'shob thik ase';
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('/update-password')
+  async updatePassword(
+    @Body() body: ChangePasswordDto,
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
+  ) {
+    const { accessToken, refreshToken } =
+      await this.userService.changePassword(body);
+
+    res.cookie('refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+    return {
+      accessToken,
+    };
   }
 }

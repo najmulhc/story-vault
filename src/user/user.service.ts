@@ -1,6 +1,7 @@
 import { JsonWebTokenError } from './../../node_modules/@types/jsonwebtoken/index.d';
 import { JwtService } from '@nestjs/jwt';
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -10,6 +11,7 @@ import { User } from './user.entity';
 import { ColumnTypeUndefinedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { UserDto } from './dto/user.dto';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -100,10 +102,10 @@ export class UserService {
       const decoded = await this.jwt.verifyAsync(refresher, {
         secret: 'koisina na opkkha korte?',
       });
-      const user =   await this.repository.findOneBy({
-   email: decoded.email
-      })
-      console.log(user)
+      const user = await this.repository.findOneBy({
+        email: decoded.email,
+      });
+
       const { accessToken, refreshToken } = await this.generateTokens({
         email: user.email,
         id: user.id,
@@ -140,6 +142,37 @@ export class UserService {
       return await this.generateTokens({
         role: savedUser.role,
         email: savedUser.email,
+        id: savedUser.id,
+      });
+    } catch (error) {
+      throw new UnauthorizedException(error);
+    }
+  }
+
+  async changePassword(payload: ChangePasswordDto) {
+    try {
+      const { email, password, newPassword } = payload;
+
+      const user = await this.repository.findOneBy({
+        email,
+      });
+
+      if (!user) {
+        throw new NotFoundException('No user exists in the given email.');
+      }
+
+      const compared = await bcrypt.compare(password, user.hashedPassword);
+      if (!compared) {
+        throw new ForbiddenException('Invalid password given.');
+      }
+
+      user.hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      const savedUser = await this.repository.save(user);
+
+      return await this.generateTokens({
+        email: savedUser.email,
+        role: savedUser.role,
         id: savedUser.id,
       });
     } catch (error) {

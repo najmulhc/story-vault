@@ -33,7 +33,9 @@ export class StoryController {
   // get all detailed stories
   @UseGuards(AuthGuard)
   @Get('/all-detailed')
-  async getAllDetailedStories() {}
+  async getAllDetailedStories() {
+    return await this.service.getAll();
+  }
 
   // get a single story
   @UseGuards(AuthGuard)

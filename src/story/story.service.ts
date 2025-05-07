@@ -20,9 +20,7 @@ export class StoryService {
       throw new NotFoundException(error);
     }
   }
-  async getAllDetailed() {
-    return [];
-  }
+   
 
   async getStory(id: number) {
     const story = await this.repo.findOneBy({ id });
