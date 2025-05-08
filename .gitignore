@@ -1,6 +1,7 @@
 info.md
-
+.env
 /node_modules
 /test
 /.vscode
 /dist
+
