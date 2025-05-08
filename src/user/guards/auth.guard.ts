@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
-    console.log(authHeader);
+    
     if (!authHeader) {
       throw new UnauthorizedException('Authorization header is missing');
     }
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwt.verifyAsync(token , {
-        secret: 'ditesi opekkha koren',
+        secret: process.env.JWT_SECRET,
       });
 
       if (!payload) {

@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common'; 
+import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { StoryModule } from './story/story.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { Story } from './story/story.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Story } from './story/story.entity';
 
     UserModule,
     StoryModule,
+    ConfigModule.forRoot()
   ],
   controllers: [],
   providers: [],

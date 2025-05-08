@@ -108,7 +108,7 @@ export class UserController {
     res: Response,
   ) {
     const { key } = body;
-    if (key != 'a7f3d9b21c8e45f0') {
+    if (key !=  process.env.ADMIN_KEY) {
       throw new UnauthorizedException('Invalid key given');
     }
     const oldRefreshToken = req.cookies['refresh-token'];

@@ -26,12 +26,12 @@ export class UserService {
     role: 'user' | 'admin';
   }) {
     const accessToken = await this.jwt.sign(payload, {
-      secret: 'ditesi opekkha koren',
+      secret: process.env.JWT_SECRET,
       expiresIn: '15m',
     });
 
     const refreshToken = await this.jwt.sign(payload, {
-      secret: 'koisina na opkkha korte?',
+      secret:  process.env.JWT_SECRET,
       expiresIn: '15d',
     });
     return {
@@ -100,7 +100,7 @@ export class UserService {
 
     try {
       const decoded = await this.jwt.verifyAsync(refresher, {
-        secret: 'koisina na opkkha korte?',
+        secret: process.env.JWT_SECRET,
       });
       const user = await this.repository.findOneBy({
         email: decoded.email,
@@ -127,7 +127,7 @@ export class UserService {
 
     try {
       const decoded = await this.jwt.verifyAsync(oldRefreshToken, {
-        secret: 'koisina na opkkha korte?',
+        secret: process.env.JWT_SECRET,
       });
 
       const user = await this.repository.findOneBy({

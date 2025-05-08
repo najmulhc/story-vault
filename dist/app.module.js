@@ -13,6 +13,7 @@ const story_module_1 = require("./story/story.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./user/user.entity");
 const story_entity_1 = require("./story/story.entity");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,6 +28,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             user_module_1.UserModule,
             story_module_1.StoryModule,
+            config_1.ConfigModule.forRoot()
         ],
         controllers: [],
         providers: [],
